@@ -25,10 +25,8 @@ process.source = cms.Source("PoolSource",
     duplicateCheckMode = cms.untracked.string("noDuplicateCheck")
 )
 
-process.ana = cms.EDAnalyzer("HGCOccupancyAnalyzer",
-                             geometrySource   = cms.untracked.vstring('HGCalEESensitive','HGCalHESiliconSensitive'), 
-                             digiCollections  = cms.untracked.vstring('HGCDigisEE',      'HGCDigisHEfront'),     
-                             )
+process.ana = cms.EDAnalyzer("HGCOccupancyAnalyzer")
+                             
 process.TFileService = cms.Service("TFileService",
                                    fileName = cms.string("occ_analysis.root")
                                    )
