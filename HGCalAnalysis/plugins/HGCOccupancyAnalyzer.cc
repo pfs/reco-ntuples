@@ -281,9 +281,9 @@ SubdetectorOccupancyHisto::~SubdetectorOccupancyHisto() {}
 HGCOccupancyAnalyzer::HGCOccupancyAnalyzer( const edm::ParameterSet &iConfig ) : 
   isInit_(false), 
   geoEE_("HGCalEESensitive"),
-  digisEE_( consumes<HGCEEDigiCollection>(edm::InputTag("HGCDigisEE")) ),
+  digisEE_( consumes<HGCEEDigiCollection>(edm::InputTag("mix","HGCDigisEE")) ),
   geoFH_("HGCalHESiliconSensitive"),
-  digisFH_( consumes<HGCEEDigiCollection>(edm::InputTag("HGCDigisHEfront")) )
+  digisFH_( consumes<HGCHEDigiCollection>(edm::InputTag("mix","HGCDigisHEfront")) )
 {  
   edm::Service<TFileService> fs;
   evtSizeH_ = fs->make<TH2F>("evtsize",";Event size (log_{10} byte);Sub-detector",100,0,10,3,0,3);
@@ -366,7 +366,7 @@ void HGCOccupancyAnalyzer::analyze( const edm::Event &iEvent, const edm::EventSe
   //analyze digi collections
   edm::Handle<HGCEEDigiCollection> eeDigisHandle;
   iEvent.getByToken(digisEE_,eeDigisHandle);
-  float eeEvtSize=analyzeHEDigis("EE",eeDigisHandle,hgcGeometries["EE"]);
+  float eeEvtSize=analyzeEEDigis("EE",eeDigisHandle,hgcGeometries["EE"]);
 
   edm::Handle<HGCHEDigiCollection> fhDigisHandle;
   iEvent.getByToken(digisFH_,fhDigisHandle);
