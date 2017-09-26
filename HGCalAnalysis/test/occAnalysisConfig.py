@@ -15,12 +15,13 @@ process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:phase2_realistic', '')
 from FastSimulation.Event.ParticleFilter_cfi import *
 from RecoLocalCalo.HGCalRecProducers.HGCalRecHit_cfi import dEdX_weights as dEdX
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
 
 process.source = cms.Source("PoolSource",
     # replace 'myfile.root' with the source file you want to use
     fileNames = cms.untracked.vstring(
-        '/store/relval/CMSSW_9_3_0_pre4/RelValTTbar_14TeV/GEN-SIM-RECO/PU25ns_93X_upgrade2023_realistic_v0_D17PU200-v1/00000/082041D3-1E89-E711-80AA-0242AC130002.root'
+        '/store/relval/CMSSW_9_1_0_pre3/RelValDoubleMuPt15Eta17_27/GEN-SIM-RECO/91X_upgrade2023_realistic_v1_D13noSmearPU140-v1/10000/1418DDB5-FE35-E711-B4B8-0025905A60B6.root'
+        #'/store/relval/CMSSW_9_1_0_pre3/RelValDoubleMuPt15Eta17_27/GEN-SIM-RECO/91X_upgrade2023_realistic_v1_D13noSmear-v1/10000/1E2EA7BF-B035-E711-BD66-0025905A60B8.root'
     ),
     duplicateCheckMode = cms.untracked.string("noDuplicateCheck")
 )
@@ -28,6 +29,7 @@ process.source = cms.Source("PoolSource",
 process.ana = cms.EDAnalyzer("HGCOccupancyAnalyzer")
                              
 process.TFileService = cms.Service("TFileService",
-                                   fileName = cms.string("occ_analysis.root")
+                                   fileName = cms.string("occ_analysis_pu140.root")
+                                   #fileName = cms.string("occ_analysis_pu0.root")                                                      
                                    )
 process.p = cms.Path(process.ana)
