@@ -22,7 +22,7 @@ using namespace std;
 
 Int_t comparisonColors[]={1,kAzure+2,kRed+2,kGreen-5,kGray+1};
 
-void drawOccupancyResults(TString outDir="~/public/html/HGCal/Occupancy");
+void drawOccupancyResults(TString outDir="~/public/html/HGCal/Occupancy_93x");
 void fixExtremities(TH1* h,bool addOverflow, bool addUnderflow);
 void simpleComparison(TString distName, TString distTitle,	std::vector<TString> &urlList, std::vector<TString> &subTitles, TString outDir);
 void compareProfilesFor(TString distName,TString distTitle,Float_t yranMin,Float_t yranMax, bool drawLog,
@@ -50,29 +50,26 @@ void drawOccupancyResults(TString outDir)
   
   //prepare output directory
   gSystem->Exec("mkdir -p "+outDir);
-  gSystem->Exec("cp $CMSSW_BASE/src/UserCode/HGCanalysis/test/analysis/occ_index.html "+ outDir+"/index.html");
+  //  gSystem->Exec("cp $CMSSW_BASE/src/UserCode/HGCanalysis/test/analysis/occ_index.html "+ outDir+"/index.html");
 
-  std::vector<TString> urlList,subTitles;
-  urlList.push_back("Single211_CMSSW_6_2_0_SLHC20_ReRECO_PU140_nops_Occupancy_0.root");subTitles.push_back("No pulse shape");
-  //urlList.push_back("Single211_CMSSW_6_2_0_SLHC20_ReRECO_PU140-v2_Occupancy_0.root"); subTitles.push_back("FE model (#Delta=25ns)");
-  //  urlList.push_back("Single13_CMSSW_6_2_0_SLHC18_v2_tau_0_Occupancy_0.root");   subTitles.push_back("No shaping");
-  //urlList.push_back("Single13_CMSSW_6_2_0_SLHC18_v2_tau_10_Occupancy_0.root");  subTitles.push_back("#tau=10 ns");
-  //urlList.push_back("Single13_CMSSW_6_2_0_SLHC18_v2_tau_20_Occupancy_0.root");  subTitles.push_back("#tau=20 ns");
+  std::vector<TString> urlList,subTitles;  
+  urlList.push_back("occ_analysis_pu200.root");subTitles.push_back("PU=200");
+  //urlList.push_back("occ_analysis_pu0.root");subTitles.push_back("PU=0");
 
   //occupancies
   std::vector<Int_t> thrScan;
   thrScan.push_back(2);
   thrScan.push_back(4);
-  thrScan.push_back(20);
-  thrScan.push_back(40);
-  //compareProfilesFor("occ",     "Occupancy / cell",             1e-3, 1,   false,  thrScan,   urlList, subTitles, outDir, false);
+  //thrScan.push_back(20);
+  //thrScan.push_back(40);
+  compareProfilesFor("occ",     "Occupancy / cell",             1e-3, 1,   false,  thrScan,   urlList, subTitles, outDir, false);
   
   //data volumes
   thrScan.clear();
-  compareProfilesFor("datavoltype", "Expected readout cell data volume type / event [# bits]", 0, 3,  false,  thrScan,  urlList, subTitles, outDir, false);
+  //compareProfilesFor("datavoltype", "Expected readout cell data volume type / event [# bits]", 0, 3,  false,  thrScan,  urlList, subTitles, outDir, false);
   compareProfilesFor("datavol", "Expected readout cell data volume / event [bit]", 0, 12,  false,  thrScan,  urlList, subTitles, outDir, false);
-  compareProfilesFor("trigvol", "Expected trigger cell data volume / event [bit]", 0, 4,   false,  thrScan,  urlList, subTitles, outDir, false);
-  simpleComparison("evtsize","Event size [log_{10} byte]",urlList,subTitles, outDir);
+  //compareProfilesFor("trigvol", "Expected trigger cell data volume / event [bit]", 0, 4,   false,  thrScan,  urlList, subTitles, outDir, false);
+  //simpleComparison("evtsize","Event size [log_{10} byte]",urlList,subTitles, outDir);
  }
 
 
@@ -151,8 +148,7 @@ void compareProfilesFor(TString distName,TString distTitle,Float_t yranMin,Float
   std::vector< std::vector< std::vector<TGraphErrors *> > > medianDistPerLayer,q95DistPerLayer; //file #, threshold #,eta bin #
   std::vector< std::vector< std::vector< std::vector<TH1 *> > > > distPerLayer; //file #, threshold #, layer #, eta bin #
   std::vector<int> layerBoundaries;
-  if(isV4geometry) { layerBoundaries.push_back(31); layerBoundaries.push_back(12); layerBoundaries.push_back(10); }
-  else             { layerBoundaries.push_back(30); layerBoundaries.push_back(12); layerBoundaries.push_back(12); }
+  layerBoundaries.push_back(28); layerBoundaries.push_back(12);
   for(size_t ifile=0; ifile<urlList.size(); ifile++)
     {
       //open new file
@@ -166,8 +162,8 @@ void compareProfilesFor(TString distName,TString distTitle,Float_t yranMin,Float
 	{	  
 	  //built the profile graphs per layer (need a template from the file)
 	  TH2F *distH= thrScan.size()==0?
-	    (TH2F *) inF->Get("analysis/sd_0_layer1_"+distName) :
-	    (TH2F *) inF->Get("analysis/sd_0_layer1_thr2_"+distName);
+	    (TH2F *) inF->Get("ana/sd_EE_layer1_"+distName) :
+	    (TH2F *) inF->Get("ana/sd_EE_layer1_thr2_"+distName);
 	  Int_t netaBins(distH->GetYaxis()->GetNbins());
 	  for(Int_t ybin=1; ybin<=netaBins; ybin++)
 	    {
@@ -190,16 +186,17 @@ void compareProfilesFor(TString distName,TString distTitle,Float_t yranMin,Float
 
 	  //iterate over sub-detectors
 	  int layerCtr(0);
-	  for(size_t isd=0;isd<=2; isd++)
+	  for(size_t isd=0;isd<=1; isd++)
 	    {
 	      Int_t nlayers=layerBoundaries[isd];
+              TString sdName(isd==0 ? "EE" : "FH");
 	      for(Int_t ilay=1; ilay<=nlayers; ilay++)
 		{
 		  layerCtr++;
-		  TString pfix("sd_"); pfix+=isd; pfix += "_layer"; pfix += ilay; 
+		  TString pfix("sd_"); pfix+=sdName; pfix += "_layer"; pfix += ilay; 
 		  if(thrScan.size()) { pfix += "_thr"; pfix += thrScan[ithr]; }
-		  distH= (TH2F *)inF->Get("analysis/"+pfix+"_"+distName);
-
+		  distH= (TH2F *)inF->Get("ana/"+pfix+"_"+distName);
+                  cout << pfix << " " << distH << endl;
 		  //profile at different etas
 		  distPerLayer[ifile][ithr].push_back( std::vector<TH1 *>(netaBins) );
 		  for(Int_t ybin=1; ybin<=netaBins; ybin++)
@@ -211,8 +208,8 @@ void compareProfilesFor(TString distName,TString distTitle,Float_t yranMin,Float
 		      fixExtremities(h,true,true);
 		      char hTitle[50]; 
 		      TString sdName("EE");
-		      if(isd==1) sdName="HEF";
-		      if(isd==2) sdName="HEB";
+		      if(isd==1) sdName="FH";
+		      if(isd==2) sdName="BH";
 		      sprintf(hTitle,"%s, layer #%d, %3.1f<|#eta|<%3.1f",
 			      sdName.Data(),
 			      ilay,
@@ -349,12 +346,12 @@ void drawProfiles(TMultiGraph *gr,TMultiGraph *grEvol,Float_t yranMin,Float_t yr
   gr->GetYaxis()->SetTitle(ytitle);
   gr->GetXaxis()->SetTitle("Layer number");
   gr->GetYaxis()->SetRangeUser(yranMin,yranMax);
-  TLegend *leg=c->BuildLegend();
+  TLegend *leg=c->BuildLegend(0.70,0.85,0.95,0.55);
   leg->SetBorderSize(0);
   leg->SetFillStyle(0);
   leg->SetTextFont(42);
   leg->SetTextSize(0.04);
-  leg->SetNColumns(2);
+  //  leg->SetNColumns(2);
   if(grEvol) grEvol->Draw("l");
   
   TPaveText *pt=new TPaveText(0.13,0.96,0.6,0.99,"brNDC");
@@ -374,8 +371,8 @@ void drawProfiles(TMultiGraph *gr,TMultiGraph *grEvol,Float_t yranMin,Float_t yr
   for(size_t i=0; i<layerBoundaries.size(); i++)
     {
       TString sdName("EE");
-      if(i==1) sdName="HEF";
-      if(i==2) sdName="HEB";
+      if(i==1) sdName="FH";
+      if(i==2) sdName="BH";
       txt->DrawLatex( nlayers+layerBoundaries[i]*0.4, drawLog ? 0.7*yranMax : 0.95*yranMax, sdName);
 
       nlayers+=layerBoundaries[i];
