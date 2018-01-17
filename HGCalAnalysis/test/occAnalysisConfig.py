@@ -1,34 +1,53 @@
 import FWCore.ParameterSet.Config as cms
-from Configuration.StandardSequences.Eras import eras
+
+import sys
+from FWCore.ParameterSet.VarParsing import VarParsing
+options = VarParsing ('standard')
+options.register('granularity',  '090', VarParsing.multiplicity.singleton, VarParsing.varType.string, "granularity to use for EE")
+options.register('input',        None,  VarParsing.multiplicity.singleton, VarParsing.varType.string, "input directory")
+if(hasattr(sys, "argv")):
+    options.parseArguments()
+print options
 
 process = cms.Process("HGCOcc")
 process.load('Configuration.StandardSequences.Services_cff')
 process.load('SimGeneral.HepPDTESSource.pythiapdt_cfi')
-process.load('Configuration.Geometry.GeometryExtended2023D17Reco_cff')
-process.load('Configuration.StandardSequences.MagneticField_cff')
+process.load('Configuration.Geometry.GeometryExtended2023HGCalMuonReco_cff')
+process.load('Configuration.Geometry.GeometryExtended2023HGCalMuon_cff')
+process.load('Configuration.StandardSequences.MagneticField_38T_PostLS1_cff')
 process.load('Configuration.EventContent.EventContent_cff')
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
-process.load('RecoLocalCalo.HGCalRecProducers.HGCalLocalRecoSequence_cff')
+
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:phase2_realistic', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, 'PH2_1K_FB_V6::All', '')
 from FastSimulation.Event.ParticleFilter_cfi import *
-from RecoLocalCalo.HGCalRecProducers.HGCalRecHit_cfi import dEdX_weights as dEdX
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
+for i in xrange(0,len(process.XMLIdealGeometryESSource.geomXMLFiles)):
+        f=process.XMLIdealGeometryESSource.geomXMLFiles[i]
+        if not 'v5/hgcalEE.xml' in f : continue
+        print 'Replacing default hgcalEE.xml with different granularity',options.granularity
+        f='RecoNtuples/HGCalAnalysis/data/granularity/%s/hgcalEE.xml'%options.granularity
+        process.XMLIdealGeometryESSource.geomXMLFiles[i]=f
+        print 'New file is',f
+        break
+print process.XMLIdealGeometryESSource.geomXMLFiles[i]
 
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(options.maxEvents) )
+
+import os
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring(
-        '/store/relval/CMSSW_9_3_0_pre4/RelValSingleMuPt100Extended/GEN-SIM-RECO/93X_upgrade2023_realistic_v0_2023D17noPU-v1/00000/782F3F08-D787-E711-8377-0CC47A7C357A.root'
-        #'/store/relval/CMSSW_9_3_0_pre4/RelValSingleMuPt100Extended/GEN-SIM-RECO/PU25ns_93X_upgrade2023_realistic_v0_D17PU200-v1/00000/F29815C1-9E89-E711-849C-0242AC130002.root'
-    ),
-    duplicateCheckMode = cms.untracked.string("noDuplicateCheck")
-)
+                            fileNames = cms.untracked.vstring(os.listdir(options.input)),
+                            duplicateCheckMode = cms.untracked.string("noDuplicateCheck")
+                            )
 
-process.ana = cms.EDAnalyzer("HGCOccupancyAnalyzer")
+
+process.ana = cms.EDAnalyzer("HGCOccupancyAnalyzer",
+                             geometrySource   = cms.untracked.vstring('HGCalEESensitive','HGCalHESiliconSensitive',  'HGCalHEScintillatorSensitive'),
+                             digiCollections  = cms.untracked.vstring('HGCDigisEE',      'HGCDigisHEfront',          'HGCDigisHEback'              )
+                             )
                              
 process.TFileService = cms.Service("TFileService",
-                                   fileName = cms.string("occ_analysis_pu0.root")                                                      
-                                   #fileName = cms.string("occ_analysis_pu200.root")
+                                   fileName = cms.string("occ_analysis_%s.root"%options.granularity)                                                      
                                    )
 process.p = cms.Path(process.ana)

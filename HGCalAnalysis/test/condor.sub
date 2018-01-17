@@ -1,0 +1,30 @@
+#executable = /afs/cern.ch/user/p/psilva/work/HGCal/CMSSW_6_2_0_SLHC28_patch1/src/runGeneration.sh
+executable = /afs/cern.ch/user/p/psilva/work/HGCal/CMSSW_6_2_0_SLHC28_patch1/src/runProduction.sh
+log        = output.log
++JobFlavour = "tomorrow"
+output     = output_050.out
+error      = output_050.err
+arguments  = 050 $(ProcId)
+queue 50
+output     = output_090.out
+error      = output_090.err
+arguments  = 090 $(ProcId)
+queue 50
+output     = output_100.out
+error      = output_100.err
+arguments  = 100 $(ProcId)
+queue 50
+output     = output_180.out
+error      = output_180.err
+arguments  = 180 $(ProcId)
+queue 50
+output     = output_400.out
+error      = output_400.err
+arguments  = 400 $(ProcId)
+queue 50
+output     = output_710.out
+error      = output_710.err
+arguments  = 710 $(ProcId)
+queue 50
+
+
