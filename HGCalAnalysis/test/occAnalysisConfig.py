@@ -37,9 +37,11 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(options.maxE
 
 import os
 process.source = cms.Source("PoolSource",
-                            fileNames = cms.untracked.vstring(os.listdir(options.input)),
+                            fileNames = cms.untracked.vstring( ['file:' + os.path.join(options.input,x) for x in os.listdir(options.input) ]),
                             duplicateCheckMode = cms.untracked.string("noDuplicateCheck")
                             )
+print 'Will process'
+print process.source.fileNames
 
 
 process.ana = cms.EDAnalyzer("HGCOccupancyAnalyzer",

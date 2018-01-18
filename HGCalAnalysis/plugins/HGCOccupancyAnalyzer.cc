@@ -107,7 +107,7 @@ void HGCOccupancyAnalyzer::analyze( const edm::Event &iEvent, const edm::EventSe
       if(digiCollections_[i].find("HE") != std::string::npos)
 	{
 	  edm::Handle<HGCHEDigiCollection> heDigis;
-	  iEvent.getByLabel(edm::InputTag("mix",digiCollections_[i]),heDigis);
+	  iEvent.getByLabel(edm::InputTag("mix",digiCollections_[i]),heDigis);	  
 	  float heEvtSize=analyzeHEDigis(i,heDigis,hgcGeometries[i]);
 	  totalEvtSize+=heEvtSize;
 	  evtSizeH_->Fill(TMath::Log10(heEvtSize/8.),i+1);
@@ -115,7 +115,8 @@ void HGCOccupancyAnalyzer::analyze( const edm::Event &iEvent, const edm::EventSe
       else
 	{
 	  edm::Handle<HGCEEDigiCollection> eeDigis;
-	  iEvent.getByLabel(edm::InputTag("mix",digiCollections_[i],"ReRECO"),eeDigis);
+	  //iEvent.getByLabel(edm::InputTag("mix",digiCollections_[i],"ReRECO"),eeDigis);
+	  iEvent.getByLabel(edm::InputTag("mix",digiCollections_[i],"DIGI2RAW"),eeDigis);
 	  float eeEvtSize=analyzeEEDigis(i,eeDigis,hgcGeometries[i]);
 	  totalEvtSize+=eeEvtSize;
 	  evtSizeH_->Fill(TMath::Log10(eeEvtSize/8.),i+1);

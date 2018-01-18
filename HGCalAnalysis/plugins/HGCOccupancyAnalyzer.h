@@ -64,6 +64,7 @@ public:
   { 
     thr_.push_back(2);
     thr_.push_back(4);
+    thr_.push_back(8);
     thr_.push_back(20);
     thr_.push_back(40);
   }
