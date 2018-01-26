@@ -113,8 +113,8 @@ public:
     trigVolHistos_[layer] = (*fs_)->make<TH2F>(name+"_trigvol",";Trigger volume [bit];Pseudo-rapidity",60,0,6,10,1.5,3.0);
     trigVolHistos_[layer]->Sumw2();
 
-    std::map<int,TH1F *> layerCountHistos;   
-    std::map<int,TH2F *> layerOccHistos;
+    std::map<int,TH1F *> layerCountHistos,layerCountTHistos;   
+    std::map<int,TH2F *> layerOccHistos,layerOccTHistos;
 
     /* Double_t occbins[100]; */
     /* for(size_t ibin=0; ibin<10; ibin++)   occbins[ibin]=ibin*1e-4; */
@@ -126,14 +126,21 @@ public:
 	TString thrName(name); thrName += "_thr"; thrName += thr_[ithr];
 	layerCountHistos[ thr_[ithr] ] = new TH1F(thrName+"_count",";Counts;Pseudo-rapidity",10,1.5,3.0);
 	layerCountHistos[ thr_[ithr] ]->SetDirectory(0);
+	layerCountTHistos[ thr_[ithr] ] = (TH1F *) layerCountHistos[ thr_[ithr] ]->Clone(thrName+"_countT");
+	layerCountTHistos[ thr_[ithr] ]->SetDirectory(0);
 	
-	layerOccHistos[ thr_[ithr] ] = (*fs_)->make<TH2F>(thrName+"_occ",";Occupancy;Pseudo-rapidity",100,0,1,10,1.5,3.0);
-	//layerOccHistos[ thr_[ithr] ] = (*fs_)->make<TH2F>(thrName+"_occ",";Occupancy;Pseudo-rapidity",99,occbins,10,1.5,3.0);
+	layerOccHistos[ thr_[ithr] ] = (*fs_)->make<TH2F>(thrName+"_occ",";Occupancy;Pseudo-rapidity",200,0,1,10,1.5,3.0);
 	layerOccHistos[ thr_[ithr] ]->Sumw2();
+	layerOccTHistos[ thr_[ithr] ] = (*fs_)->make<TH2F>(thrName+"_occT",";Occupancy;Pseudo-rapidity",200,0,1,10,1.5,3.0);
+	layerOccTHistos[ thr_[ithr] ]->Sumw2();
+	//layerOccHistos[ thr_[ithr] ] = (*fs_)->make<TH2F>(thrName+"_occ",";Occupancy;Pseudo-rapidity",99,occbins,10,1.5,3.0);
+
       }
     
     countHistos_[layer]=layerCountHistos;
+    countTHistos_[layer]=layerCountTHistos;
     occHistos_[layer]=layerOccHistos;
+    occTHistos_[layer]=layerOccTHistos;
   }
 
 
@@ -143,7 +150,8 @@ public:
   void count(int layer,float eta,int adc)
   {
     eta=fabs(eta);
-
+    float adcT=adc/TMath::CosH(eta);
+    
     int dataVol=computeDataVol(adc,eta);
     dataCountHistos_[layer]->Fill(eta,dataVol);
     if(dataVol==1)  dataVolTypeHistos_[layer]->Fill(0.,eta);
@@ -153,8 +161,10 @@ public:
     trigCountHistos_[layer]->Fill(eta,computeTriggerVol(adc,eta));
     for(size_t ithr=0; ithr<thr_.size(); ithr++)
       {
-	if(adc<thr_[ithr]) continue;
-	countHistos_[layer][ thr_[ithr] ]->Fill(eta);
+	if(adc>=thr_[ithr])
+          countHistos_[layer][ thr_[ithr] ]->Fill(eta);
+        if(adcT>=thr_[ithr])
+          countTHistos_[layer][ thr_[ithr] ]->Fill(eta);
       }
   }
 
@@ -216,6 +226,9 @@ public:
 	    TH2F *occH=jt->second;
 	    TH1F *countH=countHistos_[it->first][jt->first];
 
+            TH2F *occTH=occTHistos_[it->first][jt->first];
+	    TH1F *countTH=countTHistos_[it->first][jt->first];
+
 	    //fill occupancy histos
 	    for(int xbin=1; xbin<=countH->GetXaxis()->GetNbins(); xbin++)
 	      {
@@ -224,11 +237,18 @@ public:
 		float norm=normH->GetBinContent(xbin)*2; //we have two endcaps
 		float occ(norm>0 ? cts/norm : 0.);
 		occH->Fill(occ,eta);
+                
+		cts=countTH->GetBinContent(xbin);
+		occ=(norm>0 ? cts/norm : 0.);
+		occTH->Fill(occ,eta);
 	      }
 	    
 	    //reset counts
-	    if(reset) countH->Reset("ICE");
-	  }
+	    if(reset){
+              countH->Reset("ICE");
+              countTH->Reset("ICE");
+            }
+          }
 	
 	//data volumes
 	TH1F *dataH=dataCountHistos_[it->first];
@@ -300,7 +320,10 @@ public:
 	for(std::map<int,TH2F *>::iterator jt=occHistos_[it->first].begin();
 	    jt!=occHistos_[it->first].end();
 	    jt++)
-	  jt->second->Scale(1./nEvents_);
+          {
+            jt->second->Scale(1./nEvents_);
+            occTHistos_[it->first][jt->first]->Scale(1./nEvents_);
+          }
 
 	dataVolHistos_[it->first]->Scale(1./nEvents_);
 	trigVolHistos_[it->first]->Scale(1./nEvents_);
@@ -321,8 +344,8 @@ public:
   std::map< int, TH1F *>                normHistos_;
   std::map< int, TH1F *>                dataCountHistos_, trigCountHistos_;
   std::map< int, TH2F *>                dataVolHistos_,   trigVolHistos_, dataVolTypeHistos_;
-  std::map< int, std::map<int,TH1F *> > countHistos_;
-  std::map< int, std::map<int,TH2F *> > occHistos_;
+  std::map< int, std::map<int,TH1F *> > countHistos_,countTHistos_;
+  std::map< int, std::map<int,TH2F *> > occHistos_,occTHistos_;
   std::map< int, TH3F *>                mipHistos_, totHistos_, busyHistos_;
  
  private:

@@ -1,5 +1,5 @@
-#executable = /afs/cern.ch/user/p/psilva/work/HGCal/CMSSW_6_2_0_SLHC28_patch1/src/runGeneration.sh
-executable = /afs/cern.ch/user/p/psilva/work/HGCal/CMSSW_6_2_0_SLHC28_patch1/src/runProduction.sh
+#executable = /afs/cern.ch/user/p/psilva/work/HGCal/CMSSW_6_2_0_SLHC28_patch1/src/RecoNtuples/HGCalAnalysis/test/runGeneration.sh
+executable = /afs/cern.ch/user/p/psilva/work/HGCal/CMSSW_6_2_0_SLHC28_patch1/src/RecoNtuples/HGCalAnalysis/test/runProduction.sh
 log        = output.log
 +JobFlavour = "tomorrow"
 output     = output_050.out

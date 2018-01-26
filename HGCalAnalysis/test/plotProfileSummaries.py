@@ -61,6 +61,7 @@ def fillSummaryPlots(var,fileList):
 def showSummaryPlots(hcoll,var,outDir,bin,ytitle):
     """loops over the plot collection and shows the plots"""
 
+    ROOT.gROOT.SetBatch(True)
     ROOT.gStyle.SetOptStat(0)
     ROOT.gStyle.SetOptTitle(0)
     c=ROOT.TCanvas('c','c',500,500)
@@ -115,7 +116,7 @@ def showSummaryPlots(hcoll,var,outDir,bin,ytitle):
                 tex.SetTextSize(0.04)
                 tex.SetNDC()
                 tex.DrawLatex(0.12,0.96,'#bf{CMS} #it{simulation preliminary}')
-                tex.DrawLatex(0.75,0.96,'#scale[0.8]{Threshold: %d MIP}'%thr)
+                tex.DrawLatex(0.75,0.96,'#scale[0.8]{Threshold: %3.1f MIP}'%(thr*0.25))
             getPlotHeader()
 
             c.Modified()

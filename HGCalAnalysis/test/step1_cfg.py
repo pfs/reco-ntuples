@@ -9,6 +9,7 @@ import sys
 from FWCore.ParameterSet.VarParsing import VarParsing
 options = VarParsing ('standard')
 options.register('granularity',  '090', VarParsing.multiplicity.singleton, VarParsing.varType.string, "granularity to use for EE")
+options.register('pileup',       140,   VarParsing.multiplicity.singleton, VarParsing.varType.int, "pileup")
 if(hasattr(sys, "argv")):
     options.parseArguments()
 print options
@@ -38,7 +39,7 @@ for i in xrange(0,len(process.XMLIdealGeometryESSource.geomXMLFiles)):
         if not 'v5/hgcalEE.xml' in f : continue
         print 'Replacing default hgcalEE.xml with different granularity',options.granularity
         #f=os.path.join(cmssw_base,'src','hgcalEE_%s.xml'%options.granularity)
-        f='granularity/%s/hgcalEE.xml'%options.granularity
+        f='RecoNtuples/HGCalAnalysis/data/granularity/%s/hgcalEE.xml'%options.granularity
         process.XMLIdealGeometryESSource.geomXMLFiles[i]=f
         print 'New file is',f
         break
