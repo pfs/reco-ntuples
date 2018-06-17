@@ -17,18 +17,19 @@ from RecoLocalCalo.HGCalRecProducers.HGCalRecHit_cfi import dEdX_weights as dEdX
 
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
 
+import os
+tag='DIGI_PU0_0p0'
+baseDir='/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_2/%s'%tag
+fList = ['file:'+os.path.join(baseDir,f) for f in os.listdir(baseDir)]
+
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring(
-        '/store/relval/CMSSW_9_3_0_pre4/RelValSingleMuPt100Extended/GEN-SIM-RECO/93X_upgrade2023_realistic_v0_2023D17noPU-v1/00000/782F3F08-D787-E711-8377-0CC47A7C357A.root'
-        #'/store/relval/CMSSW_9_3_0_pre4/RelValSingleMuPt100Extended/GEN-SIM-RECO/PU25ns_93X_upgrade2023_realistic_v0_D17PU200-v1/00000/F29815C1-9E89-E711-849C-0242AC130002.root'
-    ),
+    fileNames = cms.untracked.vstring(fList),
     duplicateCheckMode = cms.untracked.string("noDuplicateCheck")
 )
 
 process.ana = cms.EDAnalyzer("HGCOccupancyAnalyzer")
                              
 process.TFileService = cms.Service("TFileService",
-                                   fileName = cms.string("occ_analysis_pu0.root")                                                      
-                                   #fileName = cms.string("occ_analysis_pu200.root")
+                                   fileName = cms.string("occ_analysis_%s.root"%tag)
                                    )
 process.p = cms.Path(process.ana)
