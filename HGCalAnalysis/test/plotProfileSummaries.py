@@ -17,14 +17,14 @@ def getDimensions(var,url,dims=['layer','ieta','thr']):
         for d in dims: dimensions[d].append( getattr(tree,d) )
     fIn.Close()
 
-    for d in dims: 
+    for d in dims:
         dimensions[d]=sorted(set(dimensions[d]))
     return dimensions
 
 
 def fillSummaryPlots(var,fileList):
     """parse the trees and make summary plots"""
-    
+
     dimensions=getDimensions(var,fileList[0][0])
     nieta=len(dimensions['ieta'])
     nlay=len(dimensions['layer'])
@@ -37,10 +37,11 @@ def fillSummaryPlots(var,fileList):
         h={}
         for thr in dimensions['thr']:
             h[thr]=ROOT.TH2F('layervsieta_%d_%d'%(i,thr),
-                             title+';Layer;Pseudo-rapidity;',
+                             title+';Layer;#eta;',
                              nlay,1,nlay+1,nieta,1,nieta+1)
+            h[thr].Sumw2()
             h[thr].SetDirectory(0)
-            
+
         #fill the histogram
         fIn=ROOT.TFile.Open(url)
         tree=fIn.Get(var)
@@ -53,7 +54,7 @@ def fillSummaryPlots(var,fileList):
             h[tree.thr].GetXaxis().SetBinLabel(xbin,'%d'%tree.layer)
             h[tree.thr].GetYaxis().SetBinLabel(ybin,'%3.2f'%tree.eta)
         fIn.Close()
-        
+
         allH.append(h)
 
     return allH
@@ -69,20 +70,37 @@ def showSummaryPlots(hcoll,var,outDir,bin,ytitle):
     c.SetLeftMargin(0.12)
     c.SetRightMargin(0.02)
     c.SetBottomMargin(0.12)
+    def getPlotHeader():
+        tex=ROOT.TLatex()
+        tex.SetTextFont(42)
+        tex.SetTextSize(0.04)
+        tex.SetNDC()
+        tex.DrawLatex(0.12,0.96,'#bf{CMS} #it{simulation preliminary}')
+        if var=='occ':
+            tex.DrawLatex(0.75,0.96,'#scale[0.8]{Threshold: %3.1f MIP}'%(thr*0.25))
 
+    
     for thr in hcoll[0]:
         
+        finalPlotColl={}
+
         nbins=getattr(hcoll[0][thr],'GetNbins%s'%bin)()
         projattr='X' if bin=='Y' else 'Y'
+        nbinsproj=getattr(hcoll[0][thr],'GetNbins%s'%projattr)()
         for ibin in xrange(1,nbins):
-
+            c.SetLogy(True)
             frame=getattr(hcoll[0][thr],'Projection'+projattr)('p'+projattr,ibin,ibin)
+            frame.Sumw2()
             frame.Reset('ICE')
-            frame.GetYaxis().SetRangeUser(1e-3,1)
+            frame.Draw()
+
+            frame.GetYaxis().SetRangeUser(1e-6,1)
+            frame.GetXaxis().SetRangeUser(1,nbinsproj+1)
             frame.GetXaxis().SetLabelSize(0.05)
             frame.GetXaxis().SetTitleSize(0.05)
             frame.GetYaxis().SetLabelSize(0.04)
             frame.GetYaxis().SetTitleSize(0.05)
+            frame.GetYaxis().SetTitleOffset(1.0)
             frame.GetXaxis().SetTitle( getattr(hcoll[0][thr],'Get%saxis'%projattr)().GetTitle() )
             frame.GetYaxis().SetTitle(ytitle)
             frame.Draw()
@@ -90,10 +108,10 @@ def showSummaryPlots(hcoll,var,outDir,bin,ytitle):
             frameTitle=getattr(hcoll[0][thr],'Get%saxis'%bin)().GetTitle()
             frameVal=getattr(hcoll[0][thr],'Get%saxis'%bin)().GetBinLabel(ibin)
 
-            leg=ROOT.TLegend(0.15,0.9,0.4,0.9-0.08*len(hcoll),'%s=%s'%(frameTitle,frameVal))
+            leg=ROOT.TLegend(0.15,0.9,0.4,0.9-0.06*len(hcoll),'%s=%s'%(frameTitle,frameVal))
             leg.SetFillStyle(0)
             leg.SetTextFont(42)
-            leg.SetTextSize(0.045)
+            leg.SetTextSize(0.035)
             leg.SetBorderSize(0)
 
             allHx,allHxRatios=[],[]
@@ -105,46 +123,79 @@ def showSummaryPlots(hcoll,var,outDir,bin,ytitle):
                 allHx[-1].Draw('same')
                 leg.AddEntry(allHx[-1],allHx[-1].GetTitle(),'lp')
 
+                if not ih in finalPlotColl: finalPlotColl[ih]=[]
+                nfp=len(finalPlotColl[ih])
+                finalPlotColl[ih].append(allHx[-1].Clone())                
+                finalPlotColl[ih][-1].SetTitle( '%s=%s'%(frameTitle,frameVal) )
+                finalPlotColl[ih][-1].SetMarkerStyle(20+nfp)
+                finalPlotColl[ih][-1].SetMarkerColor(1+nfp)
+                finalPlotColl[ih][-1].SetLineColor(1+nfp)
+                
                 allHxRatios.append( allHx[-1].Clone( '%s_ratio'%allHx[-1].GetName()) )
                 allHxRatios[-1].Divide(allHx[0])
 
             leg.Draw()
-                
-            def getPlotHeader():
-                tex=ROOT.TLatex()
-                tex.SetTextFont(42)
-                tex.SetTextSize(0.04)
-                tex.SetNDC()
-                tex.DrawLatex(0.12,0.96,'#bf{CMS} #it{simulation preliminary}')
-                tex.DrawLatex(0.75,0.96,'#scale[0.8]{Threshold: %3.1f MIP}'%(thr*0.25))
+
             getPlotHeader()
 
+            ROOT.gPad.RedrawAxis()
             c.Modified()
             c.Update()
             c.SaveAs('%s/%s_%s%d_thr%d_projection.png'%(outDir,var,bin,ibin,thr) )
-            
+
             #show the ratio to the reference now
+            #c.SetLogy(False)
             frame.GetYaxis().SetTitle('Ratio to %s'%hcoll[0][thr].GetTitle())
-            frame.GetYaxis().SetRangeUser(0.1,4)
+            frame.GetYaxis().SetRangeUser(0.8,1e3)
             frame.Draw()
-            leg=ROOT.TLegend(0.15,0.9,0.4,0.9-0.08*len(hcoll),'%s=%s'%(frameTitle,frameVal))
+            leg=ROOT.TLegend(0.15,0.9,0.4,0.9-0.06*len(hcoll),'%s=%s'%(frameTitle,frameVal))
             leg.SetFillStyle(0)
             leg.SetTextFont(42)
-            leg.SetTextSize(0.045)
+            leg.SetTextSize(0.035)
             leg.SetBorderSize(0)
             for h in allHxRatios:
                 h.Draw('same')
                 leg.AddEntry(h,h.GetTitle(),'lp')
             leg.Draw()
             getPlotHeader()
+            ROOT.gPad.RedrawAxis()
             c.Modified()
             c.Update()
             c.SaveAs('%s/%s_%s%d_thr%d_projection_ratio.png'%(outDir,var,bin,ibin,thr) )
 
+        for ih in finalPlotColl:
+            ncols=1 if len(finalPlotColl[ih])<5 else 3
+            leg=ROOT.TLegend(0.15,0.9,0.2+ncols*0.2,0.9-0.033*len(finalPlotColl[ih])/ncols)
+            leg.SetNColumns(ncols)
+            leg.SetFillStyle(0)
+            leg.SetTextFont(42)
+            leg.SetTextSize(0.03)
+            leg.SetBorderSize(0)
+            drawOpt=''
+            for gr in finalPlotColl[ih]: 
+                gr.Draw(drawOpt)
+                gr.GetXaxis().SetRangeUser(1,nbinsproj+1)
+                gr.GetXaxis().SetTitleOffset(1.1)
+                gr.GetXaxis().SetTitleSize(0.05)
+                gr.GetYaxis().SetLabelSize(0.04)
+                gr.GetYaxis().SetTitleSize(0.05)
+                gr.GetYaxis().SetTitleOffset(1.0)
+                gr.GetYaxis().SetRangeUser(1e-6,1)
+                gr.GetXaxis().SetTitle( getattr(hcoll[0][thr],'Get%saxis'%projattr)().GetTitle() )
+                drawOpt='same'
+                leg.AddEntry(gr,gr.GetTitle(),'p')
+            leg.Draw()
+            getPlotHeader()
+            ROOT.gPad.RedrawAxis()
+            c.Modified()
+            c.Update()
+            c.SaveAs('%s/%s_%s_pcoll%d_thr%d_projection.png'%(outDir,var,bin,ih,thr) )
+
+
 
 def main():
     """parse inputs and run the analysis"""
-    
+
     #configuration
     usage = 'usage: %prog [options]'
     parser = optparse.OptionParser(usage)
