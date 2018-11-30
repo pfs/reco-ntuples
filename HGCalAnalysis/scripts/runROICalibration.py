@@ -239,94 +239,16 @@ def main():
     applyCalibrationTo(url=nopuF,calib=calib,title='H#rightarrow#gamma#gamma (PU=0)')
     
     puF=sys.argv[2]
+    puTag=sys.argv[3]
     calib['L2']={}
     doPUCalibration(url=puF,calib=calib)
-    applyCalibrationTo(url=puF,calib=calib,title='H#rightarrow#gamma#gamma (PU=140)')
+    applyCalibrationTo(url=puF,calib=calib,title='H#rightarrow#gamma#gamma (PU=%s)'%puTag)
 
-
-"""
-
-
-
-
-    #fully calibrated
-    finalResol=ROOT.TH1F('puresol%d'%ireg,';#DeltaE/E;Photons',100,-0.2,0.2)
-    for i in xrange(0,len(x)):
-        genEn,genEta,recEn,noiseEst=x[i]
-        if recEn/genEn<0.1 : continue
-        recEn=recEn/(calibL0[ireg][1].Eval(genEta)+1.0)
-        recEn=recEn/(calibL1[ireg][0].Eval(recEn)+1.0)
-        recEn=recEn/(calibL2[ireg][0].Eval(noiseEst)+1.0)        
-        deltaE=recEn/genEn-1.
-        finalResol.Fill(deltaE)
-
-    showFinalCalibration(finalResol,'SR%d'%ireg,'H#rightarrow#gamma#gamma (PU=140)')
-
-
-
-
-for ireg in [1,2,3]:    
-    finalResols=[]
-    drawOpt='hist'
-    c=ROOT.TCanvas('c','c',500,500)
-    c.SetTopMargin(0.05)
-    c.SetBottomMargin(0.1)
-    c.SetLeftMargin(0.12)
-    c.SetRightMargin(0.03)
-    leg=ROOT.TLegend(0.15,0.84,0.45,0.84-4*0.04)
-    leg.SetFillStyle(0)
-    leg.SetBorderSize(0)
-    leg.SetTextFont(42)
-    for title,url,ci,fill in [('PU0','ROIAnalysis_DIGI_PU00_0p0_summary.root',ROOT.kBlack,3001),
-                              ('PU140 (#Deltat=0)','ROIAnalysis_DIGI_PU140_0p0_summary.root',ROOT.kMagenta,None),
-                              #('PU140 (#Deltat=1)','ROIAnalysis_DIGI_PU140_0p1_summary.root',ROOT.kAzure+7,None),
-                              ('PU140 (#Deltat=6)','ROIAnalysis_DIGI_PU140_0p6_summary.root',ROOT.kRed+1,None)
-                              ]:
+    #save final calibration
+    import pickle
+    with open('calib_pu%s.pck'%puTag,'w') as cachefile:
+        pickle.dump(calib,cachefile, pickle.HIGHEST_PROTOCOL)
         
-        fIn=ROOT.TFile.Open(url)
-        data=fIn.Get('data')
-        x=getEnergies(data,ireg)
-
-        finalResols.append( ROOT.TH1F('puresol%d%d'%(ireg,ci),'%s;#DeltaE/E;PDF'%title,50,-0.2,0.2) )
-        finalResols[-1].SetDirectory(0)
-        finalResols[-1].Sumw2()
-        finalResols[-1].SetLineColor(ci)
-        if fill:
-            finalResols[-1].SetFillStyle(fill)
-            finalResols[-1].SetFillColor(ci)
-        for i in xrange(0,len(x)):
-            genEn,genEta,recEn,noiseEst=x[i]
-            if recEn/genEn<0.1 : continue
-            recEn=recEn/(calibL0[ireg][1].Eval(genEta)+1.0)
-            recEn=recEn/(calibL1[ireg][0].Eval(recEn)+1.0)
-            if title!='PU0':
-                recEn=recEn/(calibL2[ireg][0].Eval(noiseEst)+1.0)        
-            deltaE=recEn/genEn-1.
-            finalResols[-1].Fill(deltaE)
-        fIn.Close()
-        
-        c.cd()
-        finalResols[-1].Scale(1./finalResols[-1].Integral())
-        finalResols[-1].GetYaxis().SetRangeUser(0,0.25)
-        finalResols[-1].Draw(drawOpt)
-        finalResols[-1].SetLineWidth(2)
-        leg.AddEntry(finalResols[-1],title,'l')
-        drawOpt='histsame'
-
-    leg.Draw()
-    tex=ROOT.TLatex()
-    tex.SetTextFont(42)
-    tex.SetTextSize(0.04)
-    tex.SetNDC()
-    tex.DrawLatex(0.15,0.96,'#bf{CMS} #it{simulation preliminary}')
-    tex.DrawLatex(0.15,0.88,'SR%d'%ireg)
-    tex.SetTextAlign(31)
-    tex.DrawLatex(0.97,0.96,'H#rightarrow#gamma#gamma')
-
-    c.Modified()
-    c.Update()
-    c.SaveAs('resolcomp%d.png'%ireg)
-"""
 
 if __name__ == "__main__":
     main()
