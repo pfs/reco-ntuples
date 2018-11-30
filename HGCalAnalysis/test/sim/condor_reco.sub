@@ -1,0 +1,26 @@
+executable = /afs/cern.ch/user/p/psilva/work/HGCal/Electronics/CMSSW_9_3_2/src/runRecoStep.sh
+output     = /afs/cern.ch/user/p/psilva/work/HGCal/Electronics/CMSSW_9_3_2/src/output_reco.out
+error      = /afs/cern.ch/user/p/psilva/work/HGCal/Electronics/CMSSW_9_3_2/src/output_reco.err
+log        = /afs/cern.ch/user/p/psilva/work/HGCal/Electronics/CMSSW_9_3_2/src/output_reco.log
++JobFlavour = "nextweek"
+
+#arguments = $(filename) /store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_2/DIGI_PU0_0p0/RECO
+#queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_2/DIGI_PU0_0p0/*.root)
+
+#arguments = $(filename) /store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_2/DIGI_PU140_0p0/RECO
+#queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_2/DIGI_PU140_0p0/*.root)
+
+#arguments = $(filename) /store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_2/DIGI_PU140_0p1/RECO
+#queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_2/DIGI_PU140_0p1/*.root)
+
+#arguments = $(filename) /store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_2/DIGI_PU140_0p6/RECO
+#queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_2/DIGI_PU140_0p6/*.root)
+
+#arguments = $(filename) /store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_2/DIGI_PU200_0p0/RECO
+#queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_2/DIGI_PU200_0p0/*.root)
+
+#arguments = $(filename) /store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_2/DIGI_PU200_0p1/RECO
+#queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_2/DIGI_PU200_0p1/*.root)
+
+arguments = $(filename) /store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_2/DIGI_PU200_0p6/RECO
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_2/DIGI_PU200_0p6/*.root)

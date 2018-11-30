@@ -10,6 +10,7 @@
 <use name="CondFormats/GeometryObjects"/>
 <use name="DataFormats/ForwardDetId"/>
 <use name="DataFormats/HGCDigi"/>
+<use name="DataFormats/HGCRecHit"/>
 <use name="DataFormats/Candidate"/>
 <use name="DataFormats/HepMCCandidate"/>
 <use name="DataFormats/ParticleFlowReco"/>
@@ -19,7 +20,6 @@
 <use name="SimDataFormats/Vertex"/>
 <use name="SimDataFormats/CaloTest"/>
 <use name="DataFormats/TrackReco"/>
-<use name="Geometry/FCalGeometry"/>
 <use name="Geometry/TrackerGeometryBuilder"/>
 <use name="DataFormats/GeometrySurface"/>
 <use name="DataFormats/TrajectorySeed"/>
@@ -28,6 +28,9 @@
 <use name="MagneticField/Engine"/>
 <use name="DataFormats/JetReco"/>
 <use name="RecoNtuples/HGCalAnalysis"/>
+<use name="FastSimulation/Event"/>
 <use name="geant4core"/>
+<use name="hepmc"/>
+<use name="heppdt"/>
 <use name="root"/>
 <flags EDM_PLUGIN="1"/>

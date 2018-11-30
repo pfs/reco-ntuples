@@ -5,7 +5,6 @@ from FWCore.ParameterSet.VarParsing import VarParsing
 options = VarParsing ('standard')
 options.register('tag', 'DIGI_PU0_0p0', VarParsing.multiplicity.singleton, VarParsing.varType.string, "input directory")
 options.parseArguments()
-print options
 
 process = cms.Process("HGCOcc")
 process.load('Configuration.StandardSequences.Services_cff')
@@ -25,7 +24,7 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(options.maxE
 
 import os
 baseDir='/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_2/%s'%options.tag
-fList = ['file:'+os.path.join(baseDir,f) for f in os.listdir(baseDir)]
+fList = ['file:'+os.path.join(baseDir,f) for f in os.listdir(baseDir) if '.root' in f]
 
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(fList),

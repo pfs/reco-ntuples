@@ -1,45 +1,57 @@
+# Simulations
+
+Check test/sim directory for different generation scripts as well as DIG and RECO.
+Condor files are available to submit the jobs on the batch
+The integrity of the files can be checked with the following script.
+Zombie or files with 0 events are removed.
+
+```
+python scripts/checkIntegrity.py input_dir
+```
+
+# Region Of Interest analyzer
+
+The ROIanalyzer is currently set to analyze H->gg events but can be easily changed for other topologies.
+To create a summary ntuple including the ROI with 3 different SR sizes in HGCAL around the generator level particles
+and additional 5 control regions for noise/pileup from a rotation in phi at the same eta run:
+
+```
+cmsRun test/roiAnalysisConfig.py maxEvents=-1 inputFiles=/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_2/DIGI_PU0_0p0/RECO/ outputFile=ROISummary_PU0_0p0.root;
+```
+
+A second script is used to collect the energy in each ROI and in the associated noise control regions.
+It produces a small ntuple with the basic inputs for calibration.
+
+```
+python scripts/summarizeROIforCalibration.py ROISummary_PU0_0p0.root ROISummary_PU0_0p0_forcalib.root 
+```
+
+The calibration can be run as follows (first argument is the no pileup file, second argument is the pileup file, last argument is a tag for the calibration).
+The L0 (relative - eta), L1 (absolute - E), L2 (pileup - average noise) calibration is stored in local pickle file in a dict.
+
+```
+python scripts/runROICalibration.py ROISummary_PU0_0p0_forcalib.root ROISummary_PU140_0p0_forcalib.root 140
+```
+
 # Occupancy analyzer
 
-## Create Min.bias simulation
-
-Check test directory
-
-## Create histograms for analysis
+To create the ntuples onw can use the following script.
+The underlying directory is hardcoded to my CMST3 directory (to be changed if needed)
+and tag_name is the name of the sub-directory with DIGIs to process
 
 ```
-for gran in 050 090 100 180 400 710; do
-    for sim in RECO RECO_200; do   
-        outDir=summary/${sim}
-        echo ${outDir} ${gran};
-        mkdir -p ${outDir};
-        cd ${outDir}
-        cmsRun $CMSSW_BASE/src/RecoNtuples/HGCalAnalysis/test/occAnalysisConfig.py granularity=${gran} input=/eos/cms/store/cmst3/user/psilva/HGCal/MinBias_${gran}/${sim}/ &
-        cd -;
-    done
-done
+do cmsRun ../test/occAnalysisConfig.py tag=tag_name
 ```
 
-## summarize the profiles for a distribution
+Once the histogram file is available one can summarize the profile of a given distribution using the following script
 
 ```
-for gran in 050 090 100 180 400 710; do
-    for sim in RECO RECO_200; do
-        outDir=summary/${sim}
-
-        for var in occ occT; do
-            python test/createProfileSummaries.py --var ${var} -i ${outDir}/occ_analysis_${gran}.root -o ${outDir}; 
-        done
-    done
-done
+python test/createProfileSummaries.py --var var_name -i occ_analysis_tag_name.root -o occ_plots;
 ```
 
-## make comparison plots
+The profiles can be furthermore compared with
 
 ```
-python test/plotProfileSummaries.py -o summary/pu140vs200 -i summary/RECO/occ_summary_occ_analysis_100.root:"PU=140",summary/RECO_200/occ_summary_occ_analysis_100.root:"PU=200" &
-python test/plotProfileSummaries.py -o summary/pu140vs200_050 -i summary/RECO/occ_summary_occ_analysis_050.root:"PU=140",summary/RECO_200/occ_summary_occ_analysis_050.root:"PU=200" &
-python test/plotProfileSummaries.py -o summary/pu200_data -i summary/RECO_200/occ_summary_occ_analysis_050.root:"0.5 cm^{2}",summary/RECO_200/occ_summary_occ_analysis_090.root:"0.9 cm^{2}",summary/RECO_200/occ_summary_occ_analysis_100.root:"1.0 cm^{2}",summary/RECO_200/occ_summary_occ_analysis_180.root:"1.8 cm^{2}" &
-python test/plotProfileSummaries.py -o summary/pu200_trig -i summary/RECO_200/occ_summary_occ_analysis_400.root:"4.0 cm^{2}",summary/RECO_200/occ_summary_occ_analysis_710.root:"7.1 cm^{2}" &
-python test/plotProfileSummaries.py -o summary/pu200_trig -i summary/RECO_200/occT_summary_occ_analysis_400.root:"4.0 cm^{2}",summary/RECO_200/occT_summary_occ_analysis_710.root:"7.1 cm^{2}" --var occT&
+python test/plotProfileSummaries.py -o occ_plots/tag1vstag2 -i occ_plots/occ_summary_tag_name_1.root:"tag1",summary/occ_summary_tag_name_2.root:"tag2"
 ```
  

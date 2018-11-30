@@ -43,7 +43,7 @@ def saveProfilesFor(distName,inUrl, thrScan, outDir, quantile=0.5):
         fdir=fOut.mkdir('thr%d'%thr)
         for ilay in xrange(1,NLAYERS+1):
 
-            distH=fIn.Get("ana/sd_0_layer%d_thr%d_%s"%(ilay,thr,distName))
+            distH=fIn.Get("ana/sd_EE_layer%d_thr%d_%s"%(ilay,thr,distName))
 
             for ybin in xrange(1,distH.GetNbinsY()+1):
 
@@ -115,15 +115,15 @@ def main():
     parser.add_option('-i', '--in',          dest='input',       help='input file [%default]',               default=None,       type='string')
     parser.add_option('-o', '--out',         dest='output',      help='output directory [%default]',         default='summary',  type='string')
     parser.add_option(      '--var',         dest='var',         help='variable to profile  [%default]',     default='occ',      type='string')
-    parser.add_option(      '--thrScan',     dest='thrScan',     help='thresholds to scan (csv) [%default]', default='2,4,8,20', type='string')
+    parser.add_option(      '--thrScan',     dest='thrScan',     help='thresholds to scan (csv) [%default]', default='2,4,20', type='string')
     parser.add_option(      '--doBusy',      dest='doBusy',      help='do busy profile [%default]',          default=False,      action='store_true')
     (opt, args) = parser.parse_args()
 
     os.system('mkdir -p %s'%opt.output)
-    #saveProfilesFor(distName=opt.var,inUrl=opt.input,
-    #                thrScan=[int(x) for x in opt.thrScan.split(',')],
-    #                outDir=opt.output,
-    #                quantile=0.5)
+    saveProfilesFor(distName=opt.var,inUrl=opt.input,
+                    thrScan=[int(x) for x in opt.thrScan.split(',')],
+                    outDir=opt.output,
+                    quantile=0.5)
     if opt.doBusy:
         saveBusyProfilesFor(inUrl=opt.input,outDir=opt.output)
 

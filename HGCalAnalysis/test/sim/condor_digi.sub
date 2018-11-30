@@ -1,0 +1,169 @@
+executable = /afs/cern.ch/user/p/psilva/work/HGCal/Electronics/CMSSW_9_3_2/src/runDigiStep.sh
+output     = /afs/cern.ch/user/p/psilva/work/HGCal/Electronics/CMSSW_9_3_2/src/output.out
+error      = /afs/cern.ch/user/p/psilva/work/HGCal/Electronics/CMSSW_9_3_2/src/output.err
+log        = /afs/cern.ch/user/p/psilva/work/HGCal/Electronics/CMSSW_9_3_2/src/output.log
++JobFlavour = "nextweek"
+
+arguments = H125gg_EE $(filename) 0 0 0
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 0 0 25
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 0 0 50
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 0 0 75
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 0 0 100
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 0 0 125
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 0 0 150
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 0 0 175
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 0 0 200
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 0 0 225
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 0 0 250
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+
+arguments = H125gg_EE $(filename) 140 0 0
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 140 0 25
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 140 0 50
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 140 0 75
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 140 0 100
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 140 0 125
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 140 0 150
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 140 0 175
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 140 0 200
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 140 0 225
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 140 0 250
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+
+arguments = H125gg_EE $(filename) 140 1 0
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 140 1 25
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 140 1 50
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 140 1 75
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 140 1 100
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 140 1 125
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 140 1 150
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 140 1 175
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 140 1 200
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 140 1 225
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 140 1 250
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+
+arguments = H125gg_EE $(filename) 140 6 0
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 140 6 25
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 140 6 50
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 140 6 75
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 140 6 100
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 140 6 125
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 140 6 150
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 140 6 175
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 140 6 200
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 140 6 225
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 140 6 250
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+
+
+arguments = H125gg_EE $(filename) 200 0 0
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 200 0 25
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 200 0 50
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 200 0 75
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 200 0 100
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 200 0 125
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 200 0 150
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 200 0 175
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 200 0 200
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 200 0 225
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 200 0 250
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+
+arguments = H125gg_EE $(filename) 200 1 0
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 200 1 25
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 200 1 50
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 200 1 75
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 200 1 100
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 200 1 125
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 200 1 150
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 200 1 175
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 200 1 200
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 200 1 225
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 200 1 250
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+
+arguments = H125gg_EE $(filename) 200 6 0
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 200 6 25
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 200 6 50
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 200 6 75
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 200 6 100
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 200 6 125
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 200 6 150
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 200 6 175
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 200 6 200
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 200 6 225
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+arguments = H125gg_EE $(filename) 200 6 250
+queue filename matching (/eos/cms/store/cmst3/user/psilva/HGCal/H125gg_EE/CMSSW_9_3_0_pre4/SIM/Events_*.root)
+
+
